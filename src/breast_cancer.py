@@ -28,3 +28,8 @@ print mlp
 predictions = mlp.predict(X_test)
 print confusion_matrix(y_test, predictions)
 print classification_report(y_test, predictions)
+
+print len(mlp.coefs_)
+print len(mlp.coefs_[0])
+print len(mlp.intercepts_[0])
+print mlp.predict(X_test[1:4])

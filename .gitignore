@@ -1,2 +1,7 @@
 *.iml
 .idea/
+logs/
+data/
+.DS_Store
+__init__.py
+*.pb
