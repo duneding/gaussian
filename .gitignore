@@ -5,3 +5,9 @@ data/
 .DS_Store
 __init__.py
 *.pb
+*.vec
+*.bin
+*.svm
+*.pkl
+*.csv
+config.yml
