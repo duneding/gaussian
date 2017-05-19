@@ -1,7 +1,7 @@
 __author__ = 'root'
 import yaml
 
-with open("config.yml", 'r') as ymlfile:
+with open("../../config.yml", 'r') as ymlfile:
     cfg = yaml.load(ymlfile)
 
 
