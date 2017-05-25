@@ -4,7 +4,7 @@ import os
 
 PAGINATION = 10
 SEARCH_SIZE = 10
-CAP = 5000
+CAP = 1000
 
 request={'size': SEARCH_SIZE, 'from': 0, 'query': {'match': {
     'online_data.form_params.department': 'auth'}}}
@@ -38,11 +38,11 @@ def events(key_track):
 def has_hits(tracks):
     return len(tracks['hits']['hits']) > 0
 
+patterns = []
 tracks = engine.search('biometrics_data', 'desktop_data', request)
 while (has_hits(tracks) and request['from'] < CAP):
 
     tracks = tracks['hits']['hits']
-    patterns = []
     for key_track in [keyboard(track) for track in tracks if len(keyboard(track))>0]:
         key_events = key_track[0]['events']#events(key_track)
         pattern = to_pattern([events['type'] for events in key_events])
