@@ -1,68 +1,37 @@
-from numpy import array
-from scipy.cluster.vq import vq, kmeans, whiten
-from time import time
-import numpy as np
+import scipy.cluster.hierarchy as hcluster
+from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
-from sklearn import metrics
-from sklearn.cluster import KMeans
-from sklearn.datasets import load_digits
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import scale
 import pandas as pd
-from mpl_toolkits.mplot3d import axes3d
-from sklearn.cluster import KMeans
-from numpy import genfromtxt
-from sklearn.preprocessing import scale
 import seaborn as sns
-import sklearn
-import pandas
-from sklearn.preprocessing import normalize
-
-def plot_correlation_map( df ):
-    corr = df.corr()
-    _ , ax = plt.subplots( figsize =( 12 , 10 ) )
-    cmap = sns.diverging_palette( 220 , 10 , as_cmap = True )
-    _ = sns.heatmap(
-        corr,
-        cmap = cmap,
-        square=True,
-        cbar_kws={ 'shrink' : .9 },
-        ax=ax,
-        annot = True,
-        annot_kws = { 'fontsize' : 12 }
-    )
-
-
 from pandas.tools.plotting import scatter_matrix
+import numpy
+from numpy import inf
 
+def plot_scatter(x, y, clusters):
+    # plotting
+    plt.scatter(x, y, c=clusters, edgecolors='g')
+    plt.axis("equal")
+    title = "threshold: %f, number of clusters: %d" % (thresh, len(set(clusters)))
+    plt.title(title)
+    plt.show()
 
-
-#my_data = genfromtxt('output.csv', delimiter=',')
-#df = pd.read_csv('output.csv', parse_dates=[0], header=None, names=['duration', 'flying_avg'])
-#stacked = df.pivot(index='duration', columns='duration', values='flying_avg').fillna(0).stack()
-
-tracks = pd.read_csv('output.csv', names=['duration', 'flying_avg', 'pattern'])
+tracks = pd.read_csv('output.csv', names=['start_time', 'end_time', 'avg_pressure', 'avg_dwell_time', 'avg_flight_time', 'pattern'])
 tracks.pop('pattern')
 tracks_norm = (tracks - tracks.mean()) / (tracks.max() - tracks.min())
-scatter_matrix(tracks, alpha=0.2, figsize=(6, 6), diagonal='kde')
-#plot_correlation_map(tracks_norm)
-
-import numpy
-import scipy.cluster.hierarchy as hcluster
+tracks = numpy.log10(tracks_norm)
+tracks[tracks == -inf] = 0
+tracks_norm = tracks
 
 # clustering
-'''
 thresh = 3
 clusters = hcluster.fclusterdata(tracks_norm, thresh, criterion="distance")
-# plotting
-plt.scatter(tracks_norm.duration, tracks_norm.flying_avg, c=clusters, edgecolors='g')
-plt.axis("equal")
-title = "threshold: %f, number of clusters: %d" % (thresh, len(set(clusters)))
-plt.title(title)
-plt.show()
-'''
+plot_scatter(tracks_norm.end_time, tracks_norm.avg_pressure, clusters)
+plot_scatter(tracks_norm.end_time, tracks_norm.start_time, clusters)
+plot_scatter(tracks_norm.avg_pressure, tracks_norm.avg_dwell_time, clusters)
+plot_scatter(tracks_norm.avg_dwell_time, tracks_norm.avg_flight_time, clusters)
 
 print 1
+
 # do unsupervised clustering
 # =============================================
 '''
