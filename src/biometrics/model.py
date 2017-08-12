@@ -1,17 +1,16 @@
-from sklearn.cluster import KMeans, MiniBatchKMeans
-from sklearn.decomposition import PCA
-import pandas as pd
-from datetime import datetime
-from matplotlib import pyplot as plt
-from matplotlib import cm as cm
 import seaborn as sns
 import time
 import numpy as np
+import pandas as pd
+from sklearn.cluster import KMeans, MiniBatchKMeans
+from sklearn.decomposition import PCA
+from matplotlib import pyplot as plt
+from matplotlib import cm as cm
 from sklearn.metrics.pairwise import pairwise_distances_argmin
 
 # Constant
-DATASET_PATH = "output.csv"
-NUM_CLUSTERS = 4
+DATASET_PATH = "dataset.csv"
+NUM_CLUSTERS = 3
 MAX_ITERATIONS = 10
 INITIALIZE_CLUSTERS = ['k-means++', 'random']
 CONVERGENCE_TOLERANCE = 0.001
@@ -65,15 +64,23 @@ def correlation_heatmap(df):
     f.tight_layout()
 
 
-def print_results(centroids, num_cluster_points):
-    print '\n\nFINAL RESULT:'
+def print_results(k_means, time_end):
+    # Obtain centroids and number Cluster of each point
+    centroids = k_means.cluster_centers_
+    num_cluster_points = k_means.labels_.tolist()
+
+    print '\n\nFINAL RESULT ' + '(' + str(time_end) + '):'
     for i, c in enumerate(centroids):
         print '\tCluster %d' % (i + 1)
         print '\t\tNumber Points in Cluster %d' % num_cluster_points.count(i)
         print '\t\tCentroid: %s' % str(centroids[i])
 
 
-def plot_results(centroids, num_cluster_points, points):
+def plot_results_kmeans(k_means, points):
+    # Obtain centroids and number Cluster of each point
+    centroids = k_means.cluster_centers_
+    num_cluster_points = k_means.labels_.tolist()
+
     plt.plot()
     for nc in range(len(centroids)):
         # plot points
@@ -95,7 +102,7 @@ def dimension_reduction(data):
     return pca.transform(data)
 
 
-def fit_mbk_means():
+def fit_mbk_means(data):
     #MBKMeans
     mbk_means = MiniBatchKMeans(init=INITIALIZE_CLUSTERS[0], n_clusters=NUM_CLUSTERS, batch_size=BATCH_SIZE,
                                 n_init=10, max_no_improvement=10, verbose=0)
@@ -106,7 +113,7 @@ def fit_mbk_means():
     return mbk_means, time_end
 
 
-def fit_k_means():
+def fit_k_means(data):
     #KMeans
     k_means = KMeans(init=INITIALIZE_CLUSTERS[0], n_clusters=NUM_CLUSTERS, n_init=10)
 
@@ -174,10 +181,10 @@ def plot_clustering(labels, centers, title, order, fig, colors, axes):
 def clustering(data):
 
     #MBKMeans
-    (mbk_means, time_end_mbk) = fit_mbk_means()
+    (mbk_means, time_end_mbk) = fit_mbk_means(data)
 
     #KMeans
-    (k_means, time_end_km) = fit_k_means()
+    (k_means, time_end_km) = fit_k_means(data)
 
     # The same colors for the same cluster
     (k_means_cluster_centers, mbk_means_cluster_centers) = get_cluster_centers(k_means, mbk_means)
@@ -190,36 +197,9 @@ def clustering(data):
            k_means_cluster_centers, mbk_means_cluster_centers, order
 
 
-def k_means(data, num_clusters, max_iterations, init_cluster, tolerance,
-            num_threads):
-
-    # Object KMeans
-    kmeans = KMeans(n_clusters=num_clusters, max_iter=max_iterations,
-                    init=init_cluster, tol=tolerance, n_jobs=num_threads)
-
-    # Training
-    start = datetime.now()
-    kmeans.fit(data)
-    print 'End: ' + str(datetime.now()-start)
-
-    # Obtain centroids and number Cluster of each point
-    centroids = kmeans.cluster_centers_
-    num_cluster_points = kmeans.labels_.tolist()
-
-    # Print final result
-    print_results(centroids, num_cluster_points)
-
-    # Plot Final results
-    plot_results(centroids, num_cluster_points, dimension_reduction(data.as_matrix()))
-
-
-# Visualize correlations
-#correlation_matrix(df)
-#correlation_heatmap(df)
-
-# Clustering
-#k_means(data_norm, NUM_CLUSTERS, MAX_ITERATIONS, INITIALIZE_CLUSTERS[0],
-#            CONVERGENCE_TOLERANCE, NUM_THREADS)
+########################
+#  Model Implementation:
+########################
 
 # Prepare data
 df = get_dataframe_from(DATASET_PATH)
@@ -228,6 +208,19 @@ df.sort(['user_id'])
 # Normalize
 data = normalize(df.ix[:SAMPLE_SIZE, 0:30])
 
+# Visualize correlations
+#correlation_matrix(df)
+correlation_heatmap(df)
+
+# Clustering KMeans
+(k_means, time_end_km) = fit_k_means(data)
+# Print final result
+print_results(k_means, time_end_km)
+# Plot Final results
+plot_results_kmeans(k_means, dimension_reduction(data.as_matrix()))
+
+
+# Clustering KMeans Vs MiniBatchKMeans
 # Training
 (
     k_means,
