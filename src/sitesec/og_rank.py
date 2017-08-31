@@ -4,7 +4,7 @@ from opsgenie.config import Configuration
 from opsgenie.alert.requests import ListAlertsRequest
 from opsgenie.errors import OpsGenieError
 from datetime import datetime
-from src import config
+import src.config.config as config
 
 config = Configuration(apikey=config.value(['opsgenie', 'apikey']))
 client = OpsGenie(config)
