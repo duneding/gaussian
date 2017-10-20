@@ -1,18 +1,20 @@
-# import statements
+#!/usr/local/env python
+import sys
+import os
 from datetime import datetime
-
 from opsgenie import OpsGenie
 from opsgenie.alert.requests import ListAlertsRequest
 from opsgenie.config import Configuration
 from opsgenie.errors import OpsGenieError
 from slackclient import SlackClient
-
+sys.path.append(os.environ['GAUSSIAN_HOME'])
 import src.config.config as config
 
 OG_CONFIG = Configuration(apikey=config.value(['opsgenie', 'apikey']))
 OG_CLIENT = OpsGenie(OG_CONFIG)
 BOT_ID = config.value(['slack', 'alfonsin_bot_id'])
-CHANNEL = config.value(['slack', 'channel_alerts'])
+#CHANNEL = config.value(['slack', 'channel_alerts'])
+CHANNEL = config.value(['slack', 'channel_sandbox'])
 AT_BOT = "<@" + BOT_ID + ">"
 EXAMPLE_COMMAND = "do"
 
@@ -61,6 +63,8 @@ if __name__ == "__main__":
 create_after = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 9)
 created_before = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 18, 30)
 limit = 100
+who_is_on_call = '@martin'
+#who_is_on_call = '@icincotta'
 
 if __name__ == "__main__":
     if SLACK_CLIENT.rtm_connect():
@@ -71,8 +75,14 @@ if __name__ == "__main__":
                 list_alerts(ListAlertsRequest(created_after=create_after, created_before=created_before, limit=limit))
 
             if len(list_alerts_response.alerts) == 0:
-                response = 'La casa esta en orden...And Now The Watch has Ended @X :)'
-                SLACK_CLIENT.api_call("chat.postMessage", channel=CHANNEL, text=response, as_user=True)
+                response = 'La casa esta en orden'
+            else:
+                response = 'La casa NO estuvo en orden. Todo va a estar bien.'
+
+            response += '...And Now, The Watch has Ended. ' + who_is_on_call
+
+            response = 'La noche se avecina, ahora empieza mi guardia (' + who_is_on_call + ')'
+            SLACK_CLIENT.api_call("chat.postMessage", link_names=1, channel=CHANNEL, text=response, as_user=True)
 
         except OpsGenieError as err:
             print "[ERROR]", err.message

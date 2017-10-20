@@ -1,7 +1,8 @@
 __author__ = 'root'
 import yaml
+import os
 
-with open("../../config.yml", 'r') as ymlfile:
+with open(os.environ['GAUSSIAN_CONFIG'] + "/config.yml", 'r') as ymlfile:
     cfg = yaml.load(ymlfile)
 
 
