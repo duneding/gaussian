@@ -3,8 +3,10 @@ import json
 
 import requests
 
-API_FEATURES = ${uri_from_config}
-API_SCORING = ${uri_from_config}
+from src.config import config
+
+API_FEATURES = config.value(['biometrics', 'api_features'])
+API_SCORING = config.value(['biometrics', 'api_scoring'])
 INPUT_FILE = 'user_with_similarity.csv'
 OUTPUT_FILE = 'users_w_similarity_w_biometric.csv'
 w = csv.writer(open(OUTPUT_FILE, 'w'))
