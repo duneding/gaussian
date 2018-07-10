@@ -5,6 +5,7 @@ f = open('article.txt', 'r')
 #article_content = unicode(f.read(), 'utf-8')
 article_content = f.read()
 sentences = nltk.sent_tokenize(article_content.decode('utf-8'))
+#sentences = nltk.sent_tokenize(article_content)
 
 for sent_no, sentence in enumerate(sentences):
 #for sent_no, sentence in enumerate(nltk.sent_tokenize(article_content)):
@@ -18,4 +19,4 @@ for sent_no, sentence in enumerate(sentences):
     results.append((sent_no, no_of_tokens, no_of_ners, no_of_nouns, score, sentence))
 
 for sent in sorted(results, key=lambda x: x[4], reverse=True):
-    print sent[5]
+    print(sent[5])

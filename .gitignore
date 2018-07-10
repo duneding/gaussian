@@ -11,3 +11,4 @@ __init__.py
 *.pkl
 *.csv
 config.yml
+config.pyc
