@@ -64,6 +64,7 @@ create_after = datetime(datetime.now().year, datetime.now().month, datetime.now(
 created_before = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 18, 30)
 limit = 100
 who_is_on_call = '@martin'
+#who_is_on_call = '@rtartara'
 #who_is_on_call = '@icincotta'
 
 if __name__ == "__main__":
@@ -81,7 +82,7 @@ if __name__ == "__main__":
 
             response += '...And Now, The Watch has Ended. ' + who_is_on_call
 
-            response = 'La noche se avecina, ahora empieza mi guardia (' + who_is_on_call + ')'
+            #response = 'La noche se avecina, ahora empieza tu guardia ' + who_is_on_call
             SLACK_CLIENT.api_call("chat.postMessage", link_names=1, channel=CHANNEL, text=response, as_user=True)
 
         except OpsGenieError as err:
