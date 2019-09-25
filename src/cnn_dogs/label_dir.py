@@ -1,17 +1,13 @@
+# Read in the image_data
+# image_data = tf.gfile.FastGFile(image_path, 'rb').read()
+from os import listdir
+from os.path import isfile, join
+from shutil import copyfile
+
 import tensorflow as tf
-import sys
 
 # change this as you see fit
-#image_path = sys.argv[1]
-
-# Read in the image_data
-#image_data = tf.gfile.FastGFile(image_path, 'rb').read()
-import os
-import shutil
-from os import listdir
-from os import mkdir
-from shutil import copyfile
-from os.path import isfile, join
+# image_path = sys.argv[1]
 varPath = '/toScan'
 destDir = "/scanned"
 imgFiles = [f for f in listdir(varPath) if isfile(join(varPath, f))]

@@ -1,9 +1,8 @@
-import tweepy
 import json
-import sys
+
 import config
+import tweepy
 from HTMLParser import HTMLParser
-import gensim
 
 #Parametros: api_tw + tag + lang_ml + index + type
 #Ej: python src/stream.py alpha obama en twitter stream

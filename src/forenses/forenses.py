@@ -1,6 +1,7 @@
-import requests
-import json
 import csv
+import json
+
+import requests
 
 w = csv.writer(open("output.csv", "w"))
 #url = 'https://api.mercadolibre.com/multiget?resource=users&ids=252105974,250760457'

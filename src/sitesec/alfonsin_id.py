@@ -1,6 +1,6 @@
-import os
 from slackclient import SlackClient
-import src.config.config as config
+
+import src.configuration.config as config
 
 token = config.value(['slack', 'token'])
 

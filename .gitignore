@@ -11,4 +11,7 @@ __init__.py
 *.pkl
 *.csv
 config.yml
+config.yaml
 config.pyc
+*.model
+src/kpapi/mocks/*

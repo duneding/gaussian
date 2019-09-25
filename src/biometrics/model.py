@@ -1,11 +1,12 @@
-import seaborn as sns
 import time
+
 import numpy as np
 import pandas as pd
+import seaborn as sns
+from matplotlib import cm as cm
+from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from sklearn.decomposition import PCA
-from matplotlib import pyplot as plt
-from matplotlib import cm as cm
 from sklearn.metrics.pairwise import pairwise_distances_argmin
 
 # Constant

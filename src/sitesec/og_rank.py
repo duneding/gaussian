@@ -1,10 +1,12 @@
 #import statements
-from opsgenie import OpsGenie
-from opsgenie.config import Configuration
-from opsgenie.alert.requests import ListAlertsRequest
-from opsgenie.errors import OpsGenieError
 from datetime import datetime
-import src.config.config as config
+
+from opsgenie import OpsGenie
+from opsgenie.alert.requests import ListAlertsRequest
+from opsgenie.config import Configuration
+from opsgenie.errors import OpsGenieError
+
+import src.configuration.config as config
 
 config = Configuration(apikey=config.value(['opsgenie', 'apikey']))
 client = OpsGenie(config)

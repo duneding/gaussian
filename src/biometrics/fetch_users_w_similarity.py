@@ -3,7 +3,7 @@ import json
 
 import requests
 
-from src.config import config
+from src.configuration import config
 
 API_FEATURES = config.value(['biometrics', 'api_features'])
 API_SCORING = config.value(['biometrics', 'api_scoring'])

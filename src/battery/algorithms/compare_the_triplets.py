@@ -1,4 +1,3 @@
-import sys
 import operator
 
 def compare(a, b):

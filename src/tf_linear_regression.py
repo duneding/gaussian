@@ -1,4 +1,3 @@
-import numpy as np
 import tensorflow as tf
 
 file_writer = tf.summary.FileWriter('../logs', graph=tf.get_default_graph())

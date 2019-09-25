@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from textblob.classifiers import NaiveBayesClassifier
-from textblob import TextBlob
 import data_sets
+from textblob import TextBlob
+from textblob.classifiers import NaiveBayesClassifier
 
 #train = data_sets.en_train
 #test = data_sets.en_test

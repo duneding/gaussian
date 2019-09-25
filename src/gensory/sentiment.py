@@ -1,11 +1,12 @@
 __author__ = 'root'
 import json
-from tweepy.streaming import StreamListener
+
+import social
+from elasticsearch import Elasticsearch
+from textblob import TextBlob
 from tweepy import OAuthHandler
 from tweepy import Stream
-from textblob import TextBlob
-from elasticsearch import Elasticsearch
-import social
+from tweepy.streaming import StreamListener
 
 # create instance of elasticsearch
 es = Elasticsearch()

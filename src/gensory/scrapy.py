@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import social
-import engine
-import config
 import sys
-#import logging
+# import logging
 import time
-import threading
 from datetime import datetime
+
+import config
+import engine
+import social
 
 #Parametros: api_tw
 #Ej: python src/scrapy.py alpha

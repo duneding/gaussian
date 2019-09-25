@@ -27,7 +27,9 @@ __author__='''
     Note: We Feel Proud To Be Indian
 ######################################################
 '''
-import socket,struct,binascii,os
+import os
+import socket
+
 import pye
 
 print pye.__author__

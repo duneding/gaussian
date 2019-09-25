@@ -1,4 +1,4 @@
-from gensim import corpora, models, similarities
+from gensim import corpora
 
 raw_corpus = ["Human machine interface for lab abc computer applications",
               "A survey of user opinion of computer system response time",

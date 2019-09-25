@@ -1,7 +1,8 @@
 # import modules & set up logging
 import logging
-import gensim
 import os
+
+import gensim
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
@@ -17,13 +18,14 @@ class MySentences(object):
 
 
 # sentences = MySentences('../../data/nlp/silmarillion.txt')  # a memory-friendly iterator
-sentences = MySentences('../../data/nlp/w2v')  # a memory-friendly iterator
+#sentences = MySentences('../../data/nlp/w2v')  # a memory-friendly iterator
+sentences = MySentences('../../../data/nlp/tlotr')  # a memory-friendly iterator
 model = gensim.models.Word2Vec(sentences, iter=1)
 
 # model.build_vocab(sentences)  # can be a non-repeatable, 1-pass generator
 # model.train(sentences)  # can be a non-repeatable, 1-pass generator
 
-print 'most similar: ' + str(model.most_similar(positive=['ring', 'king'], negative=['man'], topn=1))
-print 'similarity: ' + str(model.similarity('Ainur', 'man'))
-print 'does not match: ' + str(model.doesnt_match('king ring men'.split()))
+print('most similar: ' + str(model.most_similar(positive=['ring', 'king'], negative=['man'], topn=1)))
+print('similarity: ' + str(model.similarity('Ainur', 'man')))
+print('does not match: ' + str(model.doesnt_match('king ring men'.split())))
 

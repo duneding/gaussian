@@ -1,8 +1,4 @@
-from skimage import data, io, filters
-from bs4 import BeautifulSoup
-from urllib2 import urlopen
-from urllib2 import Request
-import urllib
+from skimage import data, filters
 
 image = data.coins()
 # ... or any other NumPy array!

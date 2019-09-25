@@ -1,32 +1,31 @@
-__author__ = 'root'
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import twitter
-import config
-from textblob import TextBlob
 
-TwitterError = twitter.TwitterError
+import configuration.config as config
 
-def consumerKey(app):
+# from textblob import TextBlob
+
+twitter_error = twitter.TwitterError
+config = config.Config()
+
+def consumer_key(app):
     return config.value(['twitter', app, 'consumer_key'])
 
-def consumerSecret(app):
+def consumer_secret(app):
     return config.value(['twitter', app, 'consumer_secret'])
 
-def accessToken(app):
+def access_token(app):
     return config.value(['twitter', app, 'access_token'])
 
-def accessTokenSecret(app):
+def access_token_secret(app):
     return config.value(['twitter', app, 'access_token_secret'])
 
 def username():
     return config.value('twitter', 'username')
 
 def api(app):
-    return twitter.Api(consumerKey(app), consumerSecret(app), accessToken(app), accessTokenSecret(app))
+    return twitter.Api(consumer_key(app), consumer_secret(app), access_token(app), access_token_secret(app))
 
-def tweetToJSON(tweet):        
+def tweet_to_json(tweet):
     if (tweet.retweeted_status!=None):        
         retweeted_status = {
                 "created_at": tweet.retweeted_status.created_at,
@@ -61,7 +60,7 @@ def tweetToJSON(tweet):
               #"sentiment": sentiment
             }
 
-def userToJSON(user):
+def user_to_json(user):
 
     return {
                 'created_at': user.created_at,
@@ -81,11 +80,14 @@ def userToJSON(user):
                 'url': user.url
             }
 
-def GetTweets(api, screen_name, since_id):
+def get_tweets(api, screen_name, since_id):
     return api.GetUserTimeline(screen_name=str(screen_name), since_id=since_id, count=20000)
 
-def GetFriends(api):
+def get_friends(api):
     return api.GetFriends(skip_status=True)
 
-def GetUser(api,account):
+def get_user(api,account):
     return api.GetUser(screen_name=account)
+
+def get_followers(api):
+    return api.GetFollowers(include_user_entities=True)

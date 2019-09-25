@@ -1,14 +1,12 @@
-import nltk
-from bs4 import BeautifulSoup
-import re
-import urllib2
-import operator
 import json
-import gensim
-from nltk.corpus import brown
-from nltk.corpus import cess_esp as cess
+import operator
+import re
+
+import nltk
+import urllib2
+from bs4 import BeautifulSoup
 from nltk import UnigramTagger as ut
-from nltk import BigramTagger as bt
+from nltk.corpus import cess_esp as cess
 
 #tags = [tag for (word, tag) in brown.tagged_words(categories='news')]
 #nltk.FreqDist(tags)

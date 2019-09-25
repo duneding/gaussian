@@ -7,6 +7,7 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+
 def preprocessing(text):
     text = text.decode('utf-8')
     # tokenize into words

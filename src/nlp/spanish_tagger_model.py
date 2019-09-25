@@ -1,6 +1,6 @@
-from nltk.corpus import cess_esp as cess
-from nltk import UnigramTagger as ut
 from nltk import BigramTagger as bt
+from nltk import UnigramTagger as ut
+from nltk.corpus import cess_esp as cess
 
 # Read the corpus into a list,
 # each entry in the list is one sentence.

@@ -1,6 +1,7 @@
-from nltk import UnigramTagger as ut
+from cPickle import dump, load
 from nltk import BigramTagger as bt
-from cPickle import dump,load
+from nltk import UnigramTagger as ut
+
 
 def loadtagger(taggerfilename):
     infile = open(taggerfilename,'rb')

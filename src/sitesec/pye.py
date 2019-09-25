@@ -30,12 +30,10 @@ UDP header Extraction
 
 
 
+import binascii
 # Importing Modules
 import socket
 import struct
-import binascii
-
-
 
 
 class unpack:

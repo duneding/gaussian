@@ -1,6 +1,5 @@
-from HTMLParser import HTMLParser 
-from monkeylearn import MonkeyLearn
 import config
+from monkeylearn import MonkeyLearn
 
 '''
 class StreamHTMLParser(HTMLParser):

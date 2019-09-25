@@ -3,7 +3,9 @@ __author__ = 'root'
 # -*- coding: utf-8 -*-
 
 from elasticsearch import Elasticsearch
-from src.config import config
+
+from src.configuration import config
+
 
 def host():
     return config.value(['elasticsearch', 'host'])

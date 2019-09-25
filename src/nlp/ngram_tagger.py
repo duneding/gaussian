@@ -1,9 +1,9 @@
 import nltk
-from nltk.tag import UnigramTagger
-from nltk.tag import DefaultTagger
-from nltk.tag import BigramTagger
-from nltk.tag import TrigramTagger
 from nltk.corpus import brown
+from nltk.tag import BigramTagger
+from nltk.tag import DefaultTagger
+from nltk.tag import TrigramTagger
+from nltk.tag import UnigramTagger
 
 tags = [tag for (word, tag) in brown.tagged_words(categories='news')]
 print nltk.FreqDist(tags)

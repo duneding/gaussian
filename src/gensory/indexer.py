@@ -1,73 +1,97 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import social
-import engine
 import sys
-#import logging
-import time
 import threading
+# import logging
+import time
 from datetime import datetime
+
+from engine import index
+from engine import search
+from social import api
+from social import get_friends
+from social import get_followers
+from social import get_tweets
+from social import tweet_to_json
+from social import user_to_json
 
 #logging.basicConfig(filename='indexer.log',level=logging.INFO)
 
 INDEX = 'twitter'
+TYPE = 'record'
 twitter_error = True
 
-alpha = social.api('alpha')
-beta = social.api('beta')
-gamma = social.api('gamma')
-api = alpha
+alpha = api('alpha')
+beta = api('beta')
+gamma = api('gamma')
+around_me = api('aroundme')
+strimy = api('strimy')
+pybig = api('pybig')
+api = pybig
 
 #thread = list()
-def worker(api, friends):
 
-    timestamp_start = str(datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
-    log_start = str((threading.currentThread().getName(), 'Launched'))
-    start = log_start + ':' + timestamp_start
-    print start
+def stats(checkpoint):
+    timestamp = str(datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
+    log = str((threading.currentThread().getName(), checkpoint))
+    print(log + ':' + timestamp)
 
-    for friend in friends:
-        engine.index(INDEX, 'user', friend.id, social.userToJSON(friend))
+def save(type, records):
+    for record in records:
+        record._json['track_type'] = type
+        index(INDEX, TYPE, record.id, record._json)
 
-        request={"size":1,"sort":[{"id":{"order":"desc"}}], "query": {"match": {
-                 "user.screen_name":friend.screen_name}}}
+def worker(api):
 
-        docs = engine.search(INDEX, 'tweet', request)
-        if (len(docs["hits"]["hits"]) > 0):
-            since_id = str(docs["hits"]["hits"][0][u'_id'])
-        else:
-            since_id = None
+    stats('Launched')
 
-        tweets = social.GetTweets(api, friend.screen_name, since_id)
+    friends = get_friends(api)
+    followers = get_followers(api)
 
-        for tweet in tweets:
-            engine.index(INDEX, 'tweet', tweet.id, social.tweetToJSON(tweet))
+    save('friends', friends)
+    save('followers', followers)
 
-    timestamp_end = str(datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
-    log_end = str((threading.currentThread().getName(), 'Finishing'))
-    end = log_end + ':' + timestamp_end
-    print end
+    # for record in friends:
+    #     save('friends', friends)
+    #
+    #     request={"size":1,"sort":[{"id":{"order":"desc"}}], "query": {"match": {
+    #              "user.screen_name":record.screen_name}}}
+    #
+    #     docs = search(INDEX, 'tweet', request)
+    #     if (len(docs["hits"]["hits"]) > 0):
+    #         since_id = str(docs["hits"]["hits"][0][u'_id'])
+    #     else:
+    #         since_id = None
+    #
+    #     tweets = get_tweets(api, record.screen_name, since_id)
+    #
+    #     for tweet in tweets:
+    #         index(INDEX, 'tweet', tweet.id, tweet_to_json(tweet))
+
+    stats('Finishing')
     return
 
 # INDEXER
 
-while twitter_error:
-    try:
-        friends = social.GetFriends(api)
-        twitter_error = False
-    except social.TwitterError:
-        twitter_error = True
-        if api == alpha:
-            api = beta
-        elif api == beta:
-            api = gamma
-        else:
-            api = alpha
-        print "Twitter Error:", sys.exc_info()[1]
+# while twitter_error:
+#     try:
+#         friends = get_friends(api)
+#         twitter_error = False
+#     except twitter_error:
+#         twitter_error = True
+#         if api == alpha:
+#             api = beta
+#         elif api == beta:
+#             api = gamma
+#         else:
+#             api = alpha
+#         print("Twitter Error:", sys.exc_info()[1])
 
-half = len(friends)/2
-alpha_thread = threading.Thread(target=worker, name='Alpha', args=(alpha, friends[:half],))
-beta_thread = threading.Thread(target=worker, name='Beta', args=(beta, friends[half:],))
-alpha_thread.start()
-beta_thread.start()
+# half = len(friends)/2
+# alpha_thread = threading.Thread(target=worker, name='Alpha', args=(alpha, friends[:half],))
+# beta_thread = threading.Thread(target=worker, name='Beta', args=(beta, friends[half:],))
+# alpha_thread.start()
+# beta_thread.start()
+
+worker(api)

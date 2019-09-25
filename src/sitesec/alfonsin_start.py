@@ -2,11 +2,12 @@
 import os
 import sys
 
-from opsgenie import OpsGenie
-from opsgenie.config import Configuration
+# from opsgenie import OpsGenie
+# from opsgenie.config import Configuration
 from slackclient import SlackClient
+
 sys.path.append(os.environ['GAUSSIAN_HOME'])
-import src.config.config as config
+import src.configuration.config as config
 
 OG_CONFIG = Configuration(apikey=config.value(['opsgenie', 'apikey']))
 OG_CLIENT = OpsGenie(OG_CONFIG)

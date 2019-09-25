@@ -1,8 +1,7 @@
 from threading import Thread
 
-import requests
-
 import config
+import requests
 
 url_fake = config.value(['device_profile', 'url_fake'])
 url_success_kvs = config.value(['device_profile', 'url_success_kvs'])
